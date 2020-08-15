@@ -6,7 +6,7 @@ const RecommendList = (props) => {
   const { recommendList } = props;
   return (
     <ListWrapper>
-      <h1 class='title'> 推荐歌单 </h1>
+      <h1 className='title'> 推荐歌单 </h1>
       <List>
         {recommendList.map((item, index) => {
           return (
@@ -24,7 +24,7 @@ const RecommendList = (props) => {
                   <span className='count'>{getCount(item.playCount)}</span>
                 </div>
               </div>
-              <div className='desc'>{item.desc}</div>
+              <div className='desc'>{item.name}</div>
             </ListItem>
           );
         })}
