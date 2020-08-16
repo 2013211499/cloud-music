@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import Horizen from '../../baseUI/horizen-item';
 import Scroll from '../../baseUI/scroll/index';
 import { categoryTypes, alphaTypes } from '../../api/config';
@@ -15,6 +15,13 @@ import {
 } from './store/actionCreators';
 import { connect } from 'react-redux';
 import LazyLoad, { forceCheck } from 'react-lazyload';
+import {
+  CategoryDataContext,
+  CHANGE_ALPHA,
+  CHANGE_CATEGORY,
+  CHANGE_TYPE,
+  CHANGE_AREA,
+} from './data';
 
 function Singers(props) {
   const {
@@ -30,10 +37,12 @@ function Singers(props) {
     pullUpRefreshDispatch,
     pullDownRefreshDispatch,
   } = props;
-  let [category, setCategory] = useState('');
-  let [alpha, setAlpha] = useState('');
-  let [type, setType] = useState(-1);
-  let [area, setArea] = useState(-1);
+  // let [category, setCategory] = useState('');
+  // let [alpha, setAlpha] = useState('');
+  // let [type, setType] = useState(-1);
+  // let [area, setArea] = useState(-1);
+  const { data, dispatch } = useContext(CategoryDataContext);
+  const { category, alpha, type, area } = data.toJS();
 
   const handlePullUp = () => {
     pullUpRefreshDispatch(
@@ -51,18 +60,24 @@ function Singers(props) {
   };
 
   useEffect(() => {
-    getHotSingerDispatch();
+    if (!singerList.size) {
+      getHotSingerDispatch();
+    }
   }, []);
 
   let handleUpdateAlpha = (val) => {
-    setAlpha(val);
+    // setAlpha(val);
+    dispatch({ type: CHANGE_ALPHA, data: val });
     updateDispatch(category, val, type, area);
   };
 
   let handleUpdateCategory = (val, type, area) => {
-    setCategory(val);
-    setType(type);
-    setArea(area);
+    //setCategory(val);
+    // setType(type);
+    // setArea(area);
+    dispatch({ type: CHANGE_CATEGORY, data: val });
+    dispatch({ type: CHANGE_TYPE, data: type });
+    dispatch({ type: CHANGE_AREA, data: area });
     updateDispatch(val, alpha, type, area);
   };
   return (
