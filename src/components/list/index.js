@@ -2,16 +2,23 @@ import React from 'react';
 import { ListWrapper, ListItem, List } from './style';
 import { getCount } from '../../api/utils';
 import LazyLoad from 'react-lazyload';
+import { withRouter } from 'react-router-dom';
 
 const RecommendList = (props) => {
   const { recommendList } = props;
+  const enterDetail = (id) => {
+    props.history.push(`/recommend/${id}`);
+  };
   return (
     <ListWrapper>
       <h1 className='title'> 推荐歌单 </h1>
       <List>
         {recommendList.map((item, index) => {
           return (
-            <ListItem key={item.id + index}>
+            <ListItem
+              key={item.id + index}
+              onClick={() => enterDetail(item.id)}
+            >
               <div className='img_wrapper'>
                 <div className='decorate'></div>
                 <LazyLoad
@@ -45,4 +52,4 @@ const RecommendList = (props) => {
   );
 };
 
-export default React.memo(RecommendList);
+export default React.memo(withRouter(RecommendList));
